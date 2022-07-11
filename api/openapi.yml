@@ -1,0 +1,107 @@
+openapi: 3.0.3
+info:
+  title: Апи для доступа к хранилищу
+  description: Апи для доступа к хранилищу
+  version: 1.0.0
+components:
+  schemas:
+    NewPasswordDataRequest:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    NewPasswordDataResponse:
+      type: object
+      properties:
+        key:
+          type: string
+    LoginDataRequest:
+      type: object
+      properties:
+        user:
+          type: string
+        password:
+          type: string
+    LoginDataResponse:
+      type: object
+      properties:
+        sessionId:
+          type: string
+    AllPasswordData:
+      type: array
+      items:
+        type: object
+        properties:
+          key:
+            type: string
+          value:
+            type: string
+    PasswordDataByKey:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+paths:
+  "/api/v1/signIn":
+    post:
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginDataRequest"
+      responses:
+        "200":
+          description: The login was successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginDataResponse"
+  "/api/v1/createNewPasswordData":
+    post:
+      summary: Create new password data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewPasswordDataRequest"
+      responses:
+        "201":
+          description: The login was successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewPasswordDataResponse"
+  "/api/v1/getAllPasswordData":
+    get:
+      summary: Get All Password Data
+      responses:
+        "200":
+          description: All password Data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllPasswordData"
+  "/api/v1/getPasswordDataByKey/{key}":
+    get:
+      summary: Get password data by key
+      parameters:
+        - in: path
+          description: key
+          name: key
+          schema:
+            type: string
+            format: string
+      responses:
+        "200":
+          description: Get password data by key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PasswordDataByKey"
